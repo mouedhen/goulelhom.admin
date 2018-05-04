@@ -1,0 +1,19 @@
+.margin-top {
+  margin-top: 1rem;
+}
+
+.align-text-center {
+  text-align: center;
+}
+.align-text-right {
+  text-align: right;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
+}
