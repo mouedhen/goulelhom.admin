@@ -12,7 +12,7 @@
   export default {
     name: 'public',
     mounted() {
-      Echo.leave('auth-channel');
+      // Echo.leave('auth-channel');
     }
   }
 </script>
