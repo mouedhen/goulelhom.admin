@@ -64,6 +64,21 @@
     </div>
 
     <div v-else>
+
+      <el-card class="margin-top">
+        <data-tables :data="records">
+          <el-table-column
+            v-for="title in titles"
+            :key="title.prop"
+            :prop="title.prop"
+            :width="title.width"
+            :label="title.label"
+            sortable="custom"
+          />
+        </data-tables>
+      </el-card>
+
+      <!--
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
         <complaint-card v-for="record in records" :key="record.id" :complaint="record"/>
       </div>
@@ -75,8 +90,9 @@
              style="width: 100%"
         ></div>
       </el-card>
-    </div>
 
+    -->
+    </div>
   </div>
 </template>
 
@@ -104,14 +120,54 @@
     data() {
       return {
         records: [],
+        titles: [
+          {
+            prop: "created_at",
+            label: "Date",
+            width: "200"
+          },
+          {
+            prop: "contact.name",
+            label: "Nom & Prénom",
+            width: "200"
+          },
+          {
+            prop: "contact.email",
+            label: "E-mail",
+            width: "200"
+          },
+          {
+            prop: "contact.phone_number",
+            label: "Tel.",
+            width: "150"
+          },
+          {
+            prop: "contact.address",
+            label: "Adresse",
+            width: "200"
+          },
+          {
+            prop: "theme.name",
+            label: "Thème",
+            width: "200"
+          },
+          {
+            prop: "municipality.name",
+            label: "Municipalité",
+            width: "200"
+          },
+          {
+            prop: "description",
+            label: "Description",
+            width: "400"
+          }
+        ],
+        params: {lang: 'fr'},
         dateFilter: [],
         themes: [],
         municipalities: [],
         municipalitiesFilter: null,
         themesFilter: null,
-        busy: false,
-        page: 1,
-        recordsHaveNext: false,
       }
     },
     computed: {
@@ -141,7 +197,6 @@
           params.start_date = this.startDate;
           params.end_date = this.endDate;
         }
-
         return downloadFile({params, filename: 'complaints.xlsx', url: apiDomain + 'export/complains?lang=fr'})
       },
       async filter() {
@@ -154,7 +209,6 @@
           params.start_date = this.startDate;
           params.end_date = this.endDate;
         }
-
         this.loadData(params)
       },
       formatDate(date) {
@@ -162,51 +216,24 @@
       },
       initData() {
         this.records = [];
-        this.busy = false;
-        this.page = 1;
-        this.recordsHaveNext = false;
       },
       loadRecords(params) {
-        this.busy = true;
-        (new Complaint())
+        let loadingInstance = Loading.service({target: '#container'});
+        return (new Complaint())
           .fetchAll(params)
           .then(r => {
             this.records = this.records.concat(r.data);
-            if (r.links.next !== null) {
-              this.recordsHaveNext = true;
-              this.page = r.meta.current_page + 1;
-              this.busy = false;
-            } else {
-              this.recordsHaveNext = false;
-              this.page = 1;
-            }
+            loadingInstance.close();
           })
           .catch(e => {
             this.$message.error('Impossible d\'accéder au données, merci de contacter vote administrateur...');
-            this.busy = false;
-            console.log(e)
+            console.log(e);
+            loadingInstance.close();
           });
       },
-      loadMore() {
-        let params = {
-          themes: this.themesFilter.toString(),
-          municipalities: this.municipalitiesFilter.toString(),
-        };
-
-        if (this.startDate !== null && this.endDate !== null) {
-          params.start_date = this.startDate;
-          params.end_date = this.endDate;
-        }
-
-        if (this.recordsHaveNext) {
-          this.loadRecords({page: this.page});
-        }
-      },
       loadData(params) {
-        let loadingInstance = Loading.service({target: '#container'});
         this.initData();
         this.loadRecords(params);
-        loadingInstance.close();
       },
       loadThemes() {
         (new Theme()).fetchAll({lang: 'fr'})

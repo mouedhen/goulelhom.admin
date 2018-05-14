@@ -58,12 +58,14 @@ import ElementUI from 'element-ui'
 import lang from 'element-ui/lib/locale/lang/fr'
 import locale from 'element-ui/lib/locale'
 import DataTables from 'vue-data-tables'
+import { DataTablesServer } from 'vue-data-tables'
 
 Vue.config.productionTip = false;
 
 locale.use(lang);
 Vue.use(ElementUI);
 Vue.use(DataTables);
+Vue.use(DataTablesServer)
 
 import VueHighlightJS from 'vue-highlightjs'
 
