@@ -52,10 +52,19 @@
       <el-col :span="2">
         <el-button style="width: 100%" type="info" plain @click="filter">Filtrer</el-button>
       </el-col>
+
+      <el-col :span="12">
+        <div class="margin-top">
+          <el-button type="success" plain @click="exportData">Exporter les données</el-button>
+        </div>
+      </el-col>
+      <el-col :span="12" class="align-text-right">
+        <el-button-group class="margin-top">
+          <el-button icon="el-icon-tickets" @click="isTableView = true"></el-button>
+          <el-button icon="el-icon-menu" @click="isTableView = false"></el-button>
+        </el-button-group>
+      </el-col>
     </el-row>
-    <div class="margin-top">
-      <el-button type="primary" @click="exportData">Exporter les données</el-button>
-    </div>
 
     <div class="no-images margin-top" v-if="records.length < 1">
       <div>
@@ -65,33 +74,32 @@
 
     <div v-else>
 
-      <el-card class="margin-top">
-        <data-tables :data="records">
+      <el-card class="margin-top" v-if="isTableView">
+        <data-tables
+          :data="records"
+          :action-col-def="actionColDef"
+          :table-props="{border: true, stripe: true}">
+          <el-table-column label="Date" width="220">
+            <template slot-scope="scope">
+              <p>{{ formatDate(scope.row.created_at) }}</p>
+            </template>
+          </el-table-column>
           <el-table-column
             v-for="title in titles"
             :key="title.prop"
             :prop="title.prop"
             :width="title.width"
             :label="title.label"
+            :fixed="title.fixed"
             sortable="custom"
           />
         </data-tables>
       </el-card>
 
-      <!--
-      <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+      <div v-else>
         <complaint-card v-for="record in records" :key="record.id" :complaint="record"/>
       </div>
 
-      <el-card style="padding: 1rem; margin-top: 1rem" v-if="recordsHaveNext">
-        <div v-loading="recordsHaveNext"
-             element-loading-text="Chargement..."
-             element-loading-spinner="el-icon-loading"
-             style="width: 100%"
-        ></div>
-      </el-card>
-
-    -->
     </div>
   </div>
 </template>
@@ -119,13 +127,9 @@
     name: "complaints-list",
     data() {
       return {
+        isTableView: true,
         records: [],
         titles: [
-          {
-            prop: "created_at",
-            label: "Date",
-            width: "200"
-          },
           {
             prop: "contact.name",
             label: "Nom & Prénom",
@@ -159,9 +163,33 @@
           {
             prop: "description",
             label: "Description",
-            width: "400"
+            width: "400",
+            fixed: "right",
           }
         ],
+        actionColDef: {
+          label: 'Actions',
+          tableColProps: {
+            align: 'center'
+          },
+          def: [{
+            handler: row => {
+              this.$message('Edit clicked')
+              row.flow_no = "hello word"
+            },
+            buttonProps: {
+              type: 'success'
+            },
+            name: 'Edit'
+          }, {
+            icon: 'message',
+            type: 'text',
+            handler: row => {
+              this.$message('RUA in row clicked ' + row.flow_no)
+            },
+            name: 'RUA'
+          }]
+        },
         params: {lang: 'fr'},
         dateFilter: [],
         themes: [],
@@ -187,6 +215,17 @@
       },
     },
     methods: {
+      getRowActionsDef() {
+        let self = this
+        return [{
+          type: 'primary',
+          handler(row) {
+            self.$message('Edit clicked')
+            console.log('Edit in row clicked', row)
+          },
+          name: 'Edit'
+        }]
+      },
       async exportData() {
         let params = {
           themes: this.themesFilter.toString(),
@@ -212,7 +251,7 @@
         this.loadData(params)
       },
       formatDate(date) {
-        return moment(date).format('L')
+        return moment(date).format('LLLL')
       },
       initData() {
         this.records = [];

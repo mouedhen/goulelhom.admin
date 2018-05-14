@@ -2,6 +2,8 @@
   <el-card class="margin-top">
     <div slot="header" class="align-text-center">
       <b v-bind:style="{color: complaint.theme.color}">{{complaint.subject}}</b><br>
+      <i><small>{{complaint.theme.name}}</small></i> -
+      <i><small>{{complaint.municipality.name}}</small></i><br>
       <span class="note">{{complaint.contact.name}}</span><br>
       <span class="note">{{formatDate(complaint.created_at)}}</span>
     </div>
@@ -82,7 +84,7 @@
     },
     methods: {
       formatDate(date) {
-        return moment(date).format('L')
+        return moment(date).format('LLLL')
       },
     }
   }
