@@ -53,6 +53,9 @@
         <el-button style="width: 100%" type="info" plain @click="filter">Filtrer</el-button>
       </el-col>
     </el-row>
+    <div class="margin-top">
+      <el-button type="primary" @click="exportData">Exporter les données</el-button>
+    </div>
 
     <div class="no-images margin-top" v-if="records.length < 1">
       <div>
@@ -81,6 +84,10 @@
   import moment from 'moment'
   import 'moment/locale/fr';
 
+  import {appConfig} from '../../config/app'
+
+  const apiDomain = appConfig.apiUrl;
+
   moment.locale('fr');
 
   import {Loading} from 'element-ui';
@@ -89,6 +96,7 @@
   import ComplaintCard from "./blocks/ComplaintCard";
   import {Theme} from "../../models/metrics/Theme";
   import {Municipality} from "../../models/locations/Municipality";
+  import {downloadFile} from "../../helpers/network";
 
   export default {
     components: {ComplaintCard},
@@ -123,6 +131,19 @@
       },
     },
     methods: {
+      async exportData() {
+        let params = {
+          themes: this.themesFilter.toString(),
+          municipalities: this.municipalitiesFilter.toString(),
+        };
+
+        if (this.startDate !== null && this.endDate !== null) {
+          params.start_date = this.startDate;
+          params.end_date = this.endDate;
+        }
+
+        return downloadFile({params, filename: 'complaints.xlsx', url: apiDomain + 'export/complains?lang=fr'})
+      },
       async filter() {
         let params = {
           themes: this.themesFilter.toString(),
@@ -166,11 +187,19 @@
             console.log(e)
           });
       },
-      loadMore(params) {
+      loadMore() {
+        let params = {
+          themes: this.themesFilter.toString(),
+          municipalities: this.municipalitiesFilter.toString(),
+        };
+
+        if (this.startDate !== null && this.endDate !== null) {
+          params.start_date = this.startDate;
+          params.end_date = this.endDate;
+        }
+
         if (this.recordsHaveNext) {
-          setTimeout(() => {
-            this.loadRecords({page: this.page, ...params});
-          }, 1000);
+          this.loadRecords({page: this.page});
         }
       },
       loadData(params) {

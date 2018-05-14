@@ -26,15 +26,15 @@
       HorizontalMenu,
     },
     mounted() {
-      Echo.channel('auth-channel')
-        .listen('UserConnectionEvent', (e) => {
-          console.log(e.name + 'was connected to the dashboard');
-          this.$notify.info({
-            title: 'Info',
-            message: e.name + ' s\'est connecté...',
-            position: 'bottom-right'
-          });
-        });
+      // Echo.channel('auth-channel')
+      //   .listen('UserConnectionEvent', (e) => {
+      //     console.log(e.name + 'was connected to the dashboard');
+      //     this.$notify.info({
+      //       title: 'Info',
+      //       message: e.name + ' s\'est connecté...',
+      //       position: 'bottom-right'
+      //     });
+      //   });
     }
   }
 </script>
