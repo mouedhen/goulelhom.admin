@@ -50,7 +50,7 @@ export class AbstractModel {
       {
         method: 'GET',
         url: this.config.apiUrl + '/' + id,
-        params: params
+        params
       })
       .then(response => {
         this.serialize(response.data.data);

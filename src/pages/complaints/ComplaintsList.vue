@@ -2,8 +2,8 @@
 
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>plaintes</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ name: 'events:index' }">historique</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'complaints:dashboard' }">plaintes</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'complaints:list' }">historique</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="margin-top" :gutter="8">
       <el-col :span="6">
@@ -76,8 +76,9 @@
 
       <el-card class="margin-top" v-if="isTableView">
         <data-tables
+          @row-click="showDetails"
+          :col-not-row-click="canNotClickList"
           :data="records"
-          :action-col-def="actionColDef"
           :table-props="{border: true, stripe: true}">
           <el-table-column label="Date" width="220">
             <template slot-scope="scope">
@@ -93,6 +94,37 @@
             :fixed="title.fixed"
             sortable="custom"
           />
+          <el-table-column
+            class-name="table-actions"
+            prop="actions"
+            label="est valide"
+            width="90"
+            align="center"
+            fixed="right"
+            col-not-row-click>
+            <template slot-scope="scope">
+              <div v-if="scope.row.is_valid">
+                <el-button
+                  type="success"
+                  icon="el-icon-check"
+                  :disabled="!scope.row.is_valid"
+                  @click="invalidateComplaints(scope.row)"
+                  size="mini"
+                  circle
+                />
+              </div>
+              <div v-else>
+                <el-button
+                  type="warning"
+                  @click="validateComplaints(scope.row)"
+                  icon="el-icon-close"
+                  :disabled="scope.row.is_valid"
+                  size="mini"
+                  circle
+                />
+              </div>
+            </template>
+          </el-table-column>
         </data-tables>
       </el-card>
 
@@ -117,23 +149,25 @@
   import {Loading} from 'element-ui';
 
   import {Complaint} from "../../models/complaints/Complaint";
-  import ComplaintCard from "./blocks/ComplaintCard";
   import {Theme} from "../../models/metrics/Theme";
   import {Municipality} from "../../models/locations/Municipality";
   import {downloadFile} from "../../helpers/network";
 
+  import ComplaintCard from "./blocks/ComplaintCard";
+
   export default {
-    components: {ComplaintCard},
     name: "complaints-list",
+    components: {ComplaintCard},
     data() {
       return {
         isTableView: true,
         records: [],
+        canNotClickList: ['actions'],
         titles: [
           {
             prop: "contact.name",
             label: "Nom & Prénom",
-            width: "200"
+            width: "180"
           },
           {
             prop: "contact.email",
@@ -170,12 +204,12 @@
         actionColDef: {
           label: 'Actions',
           tableColProps: {
-            align: 'center'
+            align: 'center',
+            fixed: 'right'
           },
           def: [{
             handler: row => {
               this.$message('Edit clicked')
-              row.flow_no = "hello word"
             },
             buttonProps: {
               type: 'success'
@@ -185,7 +219,7 @@
             icon: 'message',
             type: 'text',
             handler: row => {
-              this.$message('RUA in row clicked ' + row.flow_no)
+              this.$message('RUA in row clicked ' + row.id)
             },
             name: 'RUA'
           }]
@@ -215,16 +249,22 @@
       },
     },
     methods: {
-      getRowActionsDef() {
-        let self = this
-        return [{
-          type: 'primary',
-          handler(row) {
-            self.$message('Edit clicked')
-            console.log('Edit in row clicked', row)
-          },
-          name: 'Edit'
-        }]
+      showDetails(row, event, column) {
+        this.$router.push({name: 'complaints:details', params: {id: row.id}})
+      },
+      invalidateComplaints(data) {
+        let c = new Complaint(data);
+        c.is_valid = false;
+        c.save().then(r => {
+          data.is_valid = false;
+        });
+      },
+      validateComplaints(data) {
+        let c = new Complaint(data);
+        c.is_valid = true;
+        c.save().then(r => {
+          data.is_valid = true;
+        });
       },
       async exportData() {
         let params = {

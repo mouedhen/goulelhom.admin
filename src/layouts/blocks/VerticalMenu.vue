@@ -26,8 +26,28 @@
         </el-menu-item>
 
         <el-menu-item index="/complaints/list">
-          <map-marker-multiple />
+          <view-list />
           <span>Historique des plaintes</span>
+        </el-menu-item>
+
+      </el-menu-item-group>
+    </el-submenu>
+
+    <el-submenu index="/petitions">
+      <template slot="title">
+        <pencil-circle />
+        <span>Gestion des pétitions</span>
+      </template>
+      <el-menu-item-group>
+
+        <el-menu-item index="/petitions/dashboard">
+          <i class="el-icon-menu"></i>
+          <span>Tableau de bord</span>
+        </el-menu-item>
+
+        <el-menu-item index="/petitions/list">
+          <view-list />
+          <span>Historique des pétitions</span>
         </el-menu-item>
 
       </el-menu-item-group>
@@ -35,7 +55,7 @@
 
     <el-submenu index="/content">
       <template slot="title">
-        <dashboard-icon />
+        <playlist-edit />
         <span>Gestion du contenu</span>
       </template>
       <el-menu-item-group>
@@ -96,11 +116,14 @@
   import AccountCircleIcon from "vue-material-design-icons/account-circle"
   import ClipboardTextIcon from "vue-material-design-icons/clipboard-text"
   import DashboardIcon from "vue-material-design-icons/view-dashboard"
+  import PlaylistEdit from "vue-material-design-icons/playlist-edit"
   import YoutubeIcon from "vue-material-design-icons/youtube"
   import Bookmark from "vue-material-design-icons/bookmark"
   import Bank from "vue-material-design-icons/bank"
   import MapMarkerRadius from "vue-material-design-icons/map-marker-radius"
   import MapMarkerMultiple from "vue-material-design-icons/map-marker-multiple"
+  import PencilCircle from "vue-material-design-icons/pencil-circle-outline"
+  import ViewList from "vue-material-design-icons/view-list"
 
   export default {
     name: "vertical-menu",
@@ -108,11 +131,14 @@
       AccountCircleIcon,
       ClipboardTextIcon,
       DashboardIcon,
+      PlaylistEdit,
       YoutubeIcon,
       Bookmark,
       Bank,
       MapMarkerRadius,
       MapMarkerMultiple,
+      PencilCircle,
+      ViewList,
     }
   }
 </script>

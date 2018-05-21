@@ -10,6 +10,11 @@ import UserProfile from '../pages/profile/UserProfile'
 
 import ComplaintsDashboard from '../pages/complaints/ComplaintsDashboard'
 import ComplaintsList from '../pages/complaints/ComplaintsList'
+import ComplaintsDetails from '../pages/complaints/ComplainsDetails'
+
+import PetitionsDashboard from '../pages/petitions/PetitionsDashboard'
+import PetitionsList from '../pages/petitions/PetitionsList'
+import PetitionsDetails from '../pages/petitions/PetitionsDetails'
 
 import PresentationVideoIndex from '../pages/content-management/PresentationVideoIndex'
 import SliderIndex from '../pages/content-management/SliderIndex'
@@ -46,6 +51,7 @@ export default new Router({
       component: UserProfile,
       beforeEnter: protectedRoute,
     },
+
     {
       path: '/complaints/dashboard',
       name: 'complaints:dashboard',
@@ -56,6 +62,30 @@ export default new Router({
       path: '/complaints/list',
       name: 'complaints:list',
       component: ComplaintsList,
+      beforeEnter: protectedRoute,
+    },
+    {
+      path: '/complaints/details/:id',
+      name: 'complaints:details',
+      component: ComplaintsDetails,
+      beforeEnter: protectedRoute,
+    },
+    {
+      path: '/petitions/dashboard',
+      name: 'petitions:dashboard',
+      component: PetitionsDashboard,
+      beforeEnter: protectedRoute,
+    },
+    {
+      path: '/petitions/list',
+      name: 'petitions:list',
+      component: PetitionsList,
+      beforeEnter: protectedRoute,
+    },
+    {
+      path: '/petitions/details/:id',
+      name: 'petitions:details',
+      component: PetitionsDetails,
       beforeEnter: protectedRoute,
     },
     {

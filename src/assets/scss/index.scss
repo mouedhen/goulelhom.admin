@@ -1,5 +1,7 @@
 @import 'utils';
 @import 'crop-img';
+@import 'gallery';
+
 @import "mixins";
 
 html, body {
@@ -46,4 +48,33 @@ pre {
 .el-table--striped .el-table__body tr.el-table__row--striped.current-row td, .el-table__body tr.current-row > td, .el-table__body tr.hover-row.current-row > td, .el-table__body tr.hover-row.el-table__row--striped.current-row > td, .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
   background-color: #9e9e9e47 !important;
   cursor: pointer;
+}
+.table-actions {
+  cursor: auto !important;
+}
+
+dl.contact-infos {
+  width: 100%;
+  border-top: 1px solid #cccccc;
+  dt, dd {
+    line-height: 1.4rem;
+  }
+  dt {
+    margin-top: .7rem;
+    color: #616161;
+    font-size: .9rem;
+  }
+  dd {
+    margin: .5rem 0 0 0;
+    padding-bottom: .7rem;
+    border-bottom: 1px solid #cccccc;
+  }
+}
+
+.title {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
 }

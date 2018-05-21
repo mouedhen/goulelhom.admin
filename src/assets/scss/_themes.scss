@@ -1,0 +1,15 @@
+$--color-primary: #2980b9 !default;
+$--color-success: #27ae60 !default;
+$--color-warning: #f39c12 !default;
+$--color-danger: #c0392b !default;
+$--color-info: #95a5a6 !default;
+
+
+/* icon font path, required */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";
+
+.el-upload-dragger {
+  width: 100% !important;
+}
