@@ -12,7 +12,7 @@ export class Contact extends AbstractModel {
     email: '',
     address: '',
     complains: [],
-  }, config = {apiUrl: apiDomain + 'contacts/contacts'}) {
+  }, config = {apiUrl: apiDomain + 'locations/cities'}) {
     super(attributes, config)
   }
 
@@ -26,10 +26,7 @@ export class Contact extends AbstractModel {
   }) {
     this.id = attributes.id;
     this.name = attributes.name;
-    this.phone_number = attributes.phone_number;
-    this.email = attributes.email;
-    this.address = attributes.address;
-    this.complains = attributes.complains;
+    this.phone_number = attributes.name;
   }
 
 }

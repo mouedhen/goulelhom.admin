@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item>plaintes</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ name: 'events:index' }">Tableau de bord</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'complains:dashboard' }">gestion des plaintes</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'complains:list' }">Tableau de bord</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="margin-top" :gutter="8">
       <el-col :span="6">

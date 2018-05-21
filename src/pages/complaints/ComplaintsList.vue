@@ -2,7 +2,7 @@
 
   <div>
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ name: 'complaints:dashboard' }">plaintes</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ name: 'complaints:dashboard' }">gestion des plaintes</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'complaints:list' }">historique</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row class="margin-top" :gutter="8">
@@ -201,29 +201,6 @@
             fixed: "right",
           }
         ],
-        actionColDef: {
-          label: 'Actions',
-          tableColProps: {
-            align: 'center',
-            fixed: 'right'
-          },
-          def: [{
-            handler: row => {
-              this.$message('Edit clicked')
-            },
-            buttonProps: {
-              type: 'success'
-            },
-            name: 'Edit'
-          }, {
-            icon: 'message',
-            type: 'text',
-            handler: row => {
-              this.$message('RUA in row clicked ' + row.id)
-            },
-            name: 'RUA'
-          }]
-        },
         params: {lang: 'fr'},
         dateFilter: [],
         themes: [],

@@ -194,11 +194,6 @@
           slidesPerView: 'auto',
           spaceBetween: 16,
           centeredSlides: true,
-
-          autoplay: {
-            delay: 2500,
-            disableOnInteraction: true,
-          },
           keyboard: {
             enabled: true,
           },
@@ -240,9 +235,9 @@
         this.contactFormDialogVisible = true;
       },
       submitContact() {
+        let loadingInstance = Loading.service({target: '#container'});
         this.contact.save()
           .then(r => {
-            let loadingInstance = Loading.service({target: '#container'});
             this.complaint.contact = r;
             this.contactFormDialogVisible = false;
             loadingInstance.close();

@@ -43,6 +43,9 @@ pre {
 
 .el-table, .el-table td, .el-table th {
   border-color: #ccc !important;
+
+  border-right: 1px solid;
+  border-bottom: 1px solid;
 }
 
 .el-table--striped .el-table__body tr.el-table__row--striped.current-row td, .el-table__body tr.current-row > td, .el-table__body tr.hover-row.current-row > td, .el-table__body tr.hover-row.el-table__row--striped.current-row > td, .el-table__body tr.hover-row.el-table__row--striped > td, .el-table__body tr.hover-row > td {
